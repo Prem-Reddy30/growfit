@@ -1,0 +1,82 @@
+﻿git : remote: error: GH013: 
+Repository rule violations 
+found for 
+refs/heads/upload-all.       
+ 
+At line:1 char:1
++ git push origin upload-all 
+> push_log.txt 2>&1
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo           
+   : NotSpecified: (remote:  
+   error: ...ad-all.         
+   :String) [], RemoteExc    
+eption
+    + FullyQualifiedErrorId  
+   : NativeCommandError
+ 
+remote: 
+remote: - GITHUB PUSH 
+PROTECTION        
+remote:   ΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓ
+ÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇö
+ΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇ
+öΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓ
+ÇöΓÇöΓÇöΓÇöΓÇöΓÇö        
+remote:     Resolve the 
+following violations before 
+pushing again        
+remote: 
+remote:     - Push cannot 
+contain secrets        
+remote: 
+remote:             
+remote:      (?) Learn how 
+to resolve a blocked push    
+    
+remote:      https://docs.git
+hub.com/code-security/secret-
+scanning/working-with-secret-
+scanning-and-push-protection/
+working-with-push-protection-
+from-the-command-line#resolvi
+ng-a-blocked-push        
+remote:             
+remote:             
+remote:       ΓÇöΓÇö Groq 
+API Key ΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇö
+ΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇ
+öΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓ
+ÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇö
+ΓÇöΓÇö        
+remote:        locations:    
+    
+remote:          - commit: 77
+0bf3221b08ac7d56fe9cc55d03795
+220366f18        
+remote:            path: fitn
+ess/src/components/AIChatbot.
+jsx:5        
+remote:             
+remote:        (?) To push, 
+remove secret from commit(s) 
+or follow this URL to allow 
+the secret.        
+remote:        https://github
+.com/Prem-Reddy30/growfit/sec
+urity/secret-scanning/unblock
+-secret/3Akv3cfxmOUo0F2NviVJP
+vk6YtT        
+remote:             
+remote: 
+remote: 
+To https://github.com/Prem-Re
+ddy30/growfit.git
+ ! [remote rejected] 
+upload-all -> upload-all 
+(push declined due to 
+repository rule violations)
+error: failed to push some 
+refs to 'https://github.com/P
+rem-Reddy30/growfit.git'
