@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import './AIChatbot.css';
 
-const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY || '';
+// GROQ_API_KEY is handled by the backend for security
 
 const SYSTEM_PROMPT = `You are GrowFit AI — an elite, world-class fitness coach and gym expert. You have deep expertise in ALL areas of gym training, nutrition, bodybuilding, powerlifting, CrossFit, calisthenics, sports performance, injury prevention, and overall wellness.
 
@@ -29,55 +29,31 @@ RESPONSE RULES:
 - Include a brief safety note for medical concerns`;
 
 const callGroqAPI = async (userMessage, chatHistory = []) => {
-    const messages = [
-        { role: 'system', content: SYSTEM_PROMPT },
-        ...chatHistory,
-        { role: 'user', content: userMessage }
-    ];
+    try {
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message: userMessage,
+                history: chatHistory.map(m => ({
+                    role: m.role === 'model' ? 'model' : 'user',
+                    text: m.content
+                }))
+            }),
+        });
 
-    const modelsToTry = [
-        'llama-3.3-70b-versatile',
-        'llama-3.1-8b-instant',
-        'mixtral-8x7b-32768'
-    ];
-
-    let lastError = 'Unknown error';
-
-    for (const modelName of modelsToTry) {
-        try {
-            const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${GROQ_API_KEY}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    model: modelName,
-                    messages: messages,
-                    max_tokens: 1500,
-                    temperature: 0.5,
-                    top_p: 0.9,
-                    stream: false,
-                }),
-            });
-
-            if (!response.ok) {
-                const errBody = await response.text();
-                throw new Error(`HTTP ${response.status}: ${errBody}`);
-            }
-
-            const data = await response.json();
-            const reply = data?.choices?.[0]?.message?.content;
-
-            if (!reply) throw new Error('Empty response');
-            return reply;
-        } catch (error) {
-            lastError = error?.message || String(error);
-            if (lastError.includes('401') || lastError.includes('403')) break;
+        if (!response.ok) {
+            const errData = await response.json();
+            throw new Error(errData.details || `HTTP ${response.status}`);
         }
-    }
 
-    throw new Error(lastError);
+        const data = await response.json();
+        return data.reply;
+    } catch (error) {
+        throw error;
+    }
 };
 
 // ═══════════════════════════════════════════════════════════════
