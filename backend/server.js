@@ -323,10 +323,11 @@ app.post('/api/chat', async (req, res) => {
     }
 });
 
-// Base Route
-app.get('/', (req, res) => {
-    res.json({ status: "GrowFit API is Pulse-Active ⚡", engine: "Groq LLaMA" });
-});
+// Serve Static Files from the fitness/dist folder
+const frontendPath = path.join(__dirname, '..', 'fitness', 'dist');
+
+// Serve static assets (js, css, images)
+app.use(express.static(frontendPath));
 
 // Health Check
 app.get('/health', (req, res) => {
@@ -336,6 +337,24 @@ app.get('/health', (req, res) => {
         status: "UP",
         timestamp: new Date().toISOString()
     });
+});
+
+// Catch-all route to serve the built index.html for React Router
+// This must be the LAST route defined
+app.get('*', (req, res) => {
+    // If request is not for an API route, serve index.html
+    if (!req.path.startsWith('/api')) {
+        const indexPath = path.join(frontendPath, 'index.html');
+        if (fs.existsSync(indexPath)) {
+            res.sendFile(indexPath);
+        } else {
+            res.json({
+                status: "GrowFit API is Pulse-Active ⚡",
+                engine: "Groq LLaMA",
+                message: "Build the frontend (fitness/dist) to see the web app!"
+            });
+        }
+    }
 });
 
 // Start Server
