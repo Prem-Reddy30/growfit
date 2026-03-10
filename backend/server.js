@@ -357,9 +357,14 @@ app.get('*', (req, res) => {
     }
 });
 
-// Start Server
-app.listen(PORT, () => {
-    console.log(`🚀 Master Server running on port ${PORT}`);
-    console.log(`📡 Gateway: http://localhost:${PORT}`);
-    console.log(`🧠 AI Engine: Groq LLaMA`);
-});
+// Export app for Vercel (Required for Serverless Functions)
+module.exports = app;
+
+// Local Development Server (Optional, Vercel ignores this)
+if (process.env.NODE_ENV !== 'production' && require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`🚀 Master Server running on port ${PORT}`);
+        console.log(`📡 Gateway: http://localhost:${PORT}`);
+        console.log(`🧠 AI Engine: Groq LLaMA`);
+    });
+}
